@@ -30,8 +30,12 @@ const userSchema = new mongoose.Schema({
         require: false,
         default: "https://img.freepik.com/free-icon/user_318-159711.jpg",
 
-    }
-});
+    },
+}, {
+    timestamps: true
+}
+
+);
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
