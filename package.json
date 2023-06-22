@@ -22,6 +22,7 @@
     "morgan": "^1.10.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.1403.0",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.36.4",
     "cors": "^2.8.5",

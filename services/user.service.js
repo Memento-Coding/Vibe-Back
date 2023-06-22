@@ -18,8 +18,19 @@ const createUser = async (newUser)=>{
         return error;
     }
 }
+//TODO: validacion de contrasenia antigua para poder cambiar a una nueva contrasenia
+const updateUser = async(id, user) => {
+    if (user.password){
+        user.password = bcrypt.hashSync(user.password, 10)
+    }
+
+    const updatebd = await User.findByIdAndUpdate(id, user);
+
+    return updatebd;
+}
 
 module.exports = {
     createUser,
+    updateUser
 
 }
