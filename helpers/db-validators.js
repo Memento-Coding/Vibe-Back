@@ -19,16 +19,17 @@ const userExists = async(id) => {
 }
 
 //Validar colecciones permitidas
-// const coleccionesPermitidas = (coleccion = '', colecciones = []) =>{
-//   const incluida = colecciones.includes(coleccion)
-//   if (!incluida) {
-//     throw new Error(`La coleccion ${coleccion} no es permitida, colecciones permitidas: ${colecciones}`)
-//   }
-//   return true;
-// }
+const permittedCollections = (collection = '', collections = []) =>{
+  const included = collections.includes(collection)
+  if (!included) {
+    throw new Error(`La coleccion ${collection} no es permitida, colecciones permitidas: ${collections}`)
+  }
+  return true;
+}
 
 
   module.exports = {
     duplicatedEmail,
-    userExists
+    userExists,
+    permittedCollections
   }

@@ -1,5 +1,12 @@
 const User = require('../database/models/user.model');
 const bcrypt = require('bcrypt');
+
+const getUserById = async (id) => {
+    const user = User.findById(id);
+
+    return user;
+}
+
 const createUser = async (newUser)=>{
     //TODO: Encriptar password con bcrypt
     const {email,password,username} = newUser;
@@ -31,6 +38,7 @@ const updateUser = async(id, user) => {
 
 module.exports = {
     createUser,
-    updateUser
+    updateUser,
+    getUserById
 
 }
