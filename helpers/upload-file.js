@@ -19,7 +19,7 @@ const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg"], buffer
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: "photo/" + newName,
+      Key: "profile/" + newName,
       Body: buffer,
       
     }
