@@ -26,7 +26,7 @@ const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg"], buffer
     
     const command = new PutObjectCommand(params);
 
-    s3.send(command, function(err, data) {
+    s3.send(command, function(err) {
       if (err) {
         reject(err);
         console.log(err, err.stack); // an error occurred

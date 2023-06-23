@@ -16,4 +16,13 @@ router.put('/:collection/:id', [
     validateFields
 ], imageController.uploadFile)
 
+router.delete('/:collection/:id', [
+    //Validando que el id enviado sea de MONGODB.
+    check("id", "No es un ID valido").isMongoId(),
+    //Validar que el id exista en la bd
+    check("id").custom(userExists),
+    check('collection').custom( c => permittedCollections (c, ['user'])),
+    validateFields
+], imageController.deleteFile)
+
 module.exports = router
