@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const db = require('./database/connection');
 const routerUser = require('./v1/routes/user.routes');
 const routerImage = require('./v1/routes/image.routes');
-const routerSong = require('./v1/routes/song.route');
+const routerSong = require('./v1/routes/song.routes');
 const routerAuth = require('./v1/routes/auth.routes');
 const swaggerConfig = require('./v1/routes/swagger.js');
 require('dotenv').config();

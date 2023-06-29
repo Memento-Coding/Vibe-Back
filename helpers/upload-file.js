@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
 const s3 = require('../helpers/s3-connection');
 
-const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg"], buffer) => {
+const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg","mp3"], buffer) => {
 
   return new Promise((resolve, reject) => {
     const { file } = files;
