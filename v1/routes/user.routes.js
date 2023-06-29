@@ -22,8 +22,6 @@ router.post('/register', [
     validateFields,
 ], userController.register);
 
-router.post('/login', userController.login);
-
 router.put('/:id', [
     //Validando que el id enviado sea de MONGODB.
     check("id", "No es un ID valido").isMongoId(),
