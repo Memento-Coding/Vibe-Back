@@ -1,5 +1,12 @@
 const User = require('../database/models/user.model');
 const bcrypt = require('bcrypt');
+
+const getUserById = async (id) => {
+    const user = User.findById(id);
+
+    return user;
+}
+
 const createUser = async (newUser)=>{
     //TODO: Encriptar password con bcrypt
     const {email,password,username} = newUser;
@@ -17,6 +24,16 @@ const createUser = async (newUser)=>{
     } catch (error) {
         return error;
     }
+}
+//TODO: validacion de contrasenia antigua para poder cambiar a una nueva contrasenia
+const updateUser = async(id, user) => {
+    if (user.password){
+        user.password = bcrypt.hashSync(user.password, 10)
+    }
+
+    const updatebd = await User.findByIdAndUpdate(id, user);
+
+    return updatebd;
 }
 
 const login = async (newUser)=>{
@@ -37,19 +54,9 @@ const login = async (newUser)=>{
     
 }
 
-const existUser = async (id)=>{
-    try {
-        const userFound = await User.findById(id);
-        return userFound;
-    } catch (error) {
-        return error;
-        
-    }
-}
-
 module.exports = {
+    getUserById,
     createUser,
-    login,
-    existUser
-
+    updateUser,
+    login
 }

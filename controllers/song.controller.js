@@ -1,10 +1,19 @@
-const randomSongsService = require('../services/song.service');
+const songService = require('../services/song.service');
+
+const getSongs = async(req, res) => {
+    const { term } = req.params;
+    const songs = await songService.getSongs(term);
+    
+    res.json({
+        results: songs
+    })
+}
 
 const getRandomSongs = async (req, res) => {
   const count = +req.query.count;
 
   try {
-    const songs = await randomSongsService.getRandomSongs(count);
+    const songs = await songService.getRandomSongs(count);
     const simplifiedSongs = songs.map(song => ({
       nombre: song.nombre,
       artista: song.artista,
@@ -17,5 +26,6 @@ const getRandomSongs = async (req, res) => {
 };
 
 module.exports = {
+  getSongs,
   getRandomSongs,
 };
