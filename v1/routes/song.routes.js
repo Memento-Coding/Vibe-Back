@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getRandomSongs } = require('../../controllers/song.controller');
+const songController = require('../../controllers/song.controller');
 
 const router = Router();
 
@@ -27,7 +27,9 @@ const router = Router();
  */
 router.get('/', [
   check('count', 'El número de canciones debe ser un entero positivo').isInt({ min: 1 }),
-], getRandomSongs);
+], songController.getRandomSongs);
+
+router.get('/:term', songController.getSongs);
 
 
 module.exports = router;
