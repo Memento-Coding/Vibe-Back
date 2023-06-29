@@ -21,7 +21,7 @@ const login = (req,res)=>{
     
 }
 
-const userPut = async (req, res) => {
+const userPut = async(req, res) => {
     const {id} = req.params;
     const {...user} = req.body;
     try {
@@ -36,6 +36,10 @@ const userPut = async (req, res) => {
             msg: 'Error en el servidor, hable con el administrador'
         })
     }
+}
+
+const favoriteSong = async(req, res) => {
+    
 }
 
 module.exports = {

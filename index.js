@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const db = require('./database/connection');
 const routerUser = require('./v1/routes/user.routes');
 const routerImage = require('./v1/routes/image.routes');
+const routerSong = require('./v1/routes/song.route');
 require('dotenv').config();
 
 db.connectDb();
@@ -18,6 +19,7 @@ app.use(fileUpload({
 }));
 app.use('/v1/user', routerUser);
 app.use('/v1/image', routerImage);
+app.use('/v1/song', routerSong);
 
 
 app.listen(process.env.PORT || 3030, () => {
