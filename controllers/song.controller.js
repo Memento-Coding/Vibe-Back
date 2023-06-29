@@ -9,6 +9,10 @@ const getSongs = async(req, res) => {
     })
 }
 
+const uploadSong = async (req,res)=>{
+  
+}
+
 const getRandomSongs = async (req, res) => {
   const count = +req.query.count;
 
