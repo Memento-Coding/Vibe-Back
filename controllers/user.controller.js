@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const generateToken= require('../helpers/generateToken');
 
 const register = (req,res)=>{
     const {email,password,username} = req.body;
@@ -15,10 +16,6 @@ const register = (req,res)=>{
     }else{
         res.send(response);
     }
-}
-
-const login = (req,res)=>{
-    
 }
 
 const userPut = async(req, res) => {
@@ -39,7 +36,27 @@ const userPut = async(req, res) => {
 }
 
 const favoriteSong = async(req, res) => {
-    
+
+}
+
+const login = async (req,res)=>{
+    const {emailOrUser,password} = req.body;
+    const user = {
+        emailOrUser,
+        password
+    }
+    const isLoggedIn = await userService.login(user);
+    console.log(isLoggedIn?.user._id);
+    if(isLoggedIn.flag){
+        const token = await generateToken.tokenSign(isLoggedIn?.user);
+        res.status(200).send({
+            token,
+        });
+        return;
+    }
+    res.status(401).send({
+        message:"Datos incorrectos"
+    });
 }
 
 module.exports = {

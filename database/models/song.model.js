@@ -16,18 +16,14 @@ const songSchema = new mongoose.Schema({
         type:String,
         require:true,
     },
-    duration:{
-        type:String,
-        require:true,
-    },
     photo:{
         type:String,
         require:true,
         default:"https://vibe-data-structure.s3.amazonaws.com/photo/Default.png",
     },
-    year:{
+    file:{
         type:String,
-        require:true,
+        require:true
     }
 });
 

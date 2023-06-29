@@ -7,6 +7,8 @@ const db = require('./database/connection');
 const routerUser = require('./v1/routes/user.routes');
 const routerImage = require('./v1/routes/image.routes');
 const routerSong = require('./v1/routes/song.route');
+const routerAuth = require('./v1/routes/auth.routes');
+const swaggerConfig = require('./v1/routes/swagger.js');
 require('dotenv').config();
 
 db.connectDb();
@@ -20,7 +22,9 @@ app.use(fileUpload({
 app.use('/v1/user', routerUser);
 app.use('/v1/image', routerImage);
 app.use('/v1/song', routerSong);
+app.use('/v1',routerAuth);
 
+swaggerConfig(app);
 
 app.listen(process.env.PORT || 3030, () => {
     console.log("Server running in port " + process.env.PORT);
