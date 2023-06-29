@@ -1,7 +1,7 @@
 const randomSongsService = require('../services/song.service');
 
 const getRandomSongs = async (req, res) => {
-  const count = parseInt(req.params.count);
+  const count = +req.query.count;
 
   try {
     const songs = await randomSongsService.getRandomSongs(count);

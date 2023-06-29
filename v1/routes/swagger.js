@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3030/v1/',
+        url: 'https://thriving-insect-production.up.railway.app/v1/',
       },
     ],
     components: {

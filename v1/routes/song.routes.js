@@ -1,23 +1,18 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { getRandomSongs } = require('../../controllers/song.controller');
+
 const router = Router();
 
 /**
  * @swagger
- * tags:
- *   name: Song
- */
-
-/**
- * @swagger
- * /song/random/{count}:
+ * /song:
  *   get:
  *     summary: Obtener canciones aleatorias
  *     tags: [Song]
  *     description: Obtiene un número específico de canciones aleatorias.
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: count
  *         required: true
  *         description: Número de canciones a obtener.
@@ -30,8 +25,9 @@ const router = Router();
  *       500:
  *         description: Error al obtener canciones aleatorias.
  */
-router.get('/random/:count', [
+router.get('/', [
   check('count', 'El número de canciones debe ser un entero positivo').isInt({ min: 1 }),
 ], getRandomSongs);
+
 
 module.exports = router;
