@@ -14,7 +14,7 @@ const getRandomSongs = async (count) => {
     const songs = await Song.aggregate([{ $sample: { size: count } }]);
     return songs;
   } catch (error) {
-    throw new Error("Error al obtener canciones aleatorias");
+    throw new Error("Error al obtener canciones aleatorias" + error);
   }
 };
 

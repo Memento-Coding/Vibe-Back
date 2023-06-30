@@ -6,8 +6,9 @@ const morgan = require('morgan');
 const db = require('./database/connection');
 const routerUser = require('./v1/routes/user.routes');
 const routerImage = require('./v1/routes/image.routes');
-const routerSong = require('./v1/routes/song.route');
+const routerSong = require('./v1/routes/song.routes');
 const routerAuth = require('./v1/routes/auth.routes');
+const musicalGenre = require('./v1/routes/musicalGenres.routes');
 const swaggerConfig = require('./v1/routes/swagger.js');
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ app.use(fileUpload({
 app.use('/v1/user', routerUser);
 app.use('/v1/image', routerImage);
 app.use('/v1/song', routerSong);
+app.use('/v1/musicalGenre', musicalGenre);
 app.use('/v1',routerAuth);
 
 swaggerConfig(app);
