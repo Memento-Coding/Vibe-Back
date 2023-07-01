@@ -1,5 +1,6 @@
 const userService = require('../services/user.service');
 const generateToken= require('../helpers/generateToken');
+const { default: axios } = require('axios');
 
 const register = (req,res)=>{
     const {email,password,username} = req.body;
@@ -59,8 +60,41 @@ const login = async (req,res)=>{
     });
 }
 
+const loginGoogle = async (req, res) => {
+    const { code } = req.query;
+  
+    try {
+      const { data } = await axios.post('https://oauth2.googleapis.com/token', {
+        code,
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: 'tu_uri_de_redireccion',
+        grant_type: 'authorization_code'
+      });
+  
+      const { access_token } = data;
+  
+
+      const googleUser = {
+        username: 'nombre_de_usuario',
+        foto: 'url_de_la_foto',
+        _id: 'id_del_usuario'
+      };
+  
+  
+      const token = await generateToken.tokenSign(googleUser);
+  
+      res.status(200).json({ token });
+    } catch (error) {
+      console.error('Error al obtener el token de acceso:', error.message);
+      res.status(500).json({ error: 'Error al obtener el token de acceso' });
+    }
+  };
+
+
 module.exports = {
     register,
     login,
-    userPut
+    userPut,
+    loginGoogle
 }
