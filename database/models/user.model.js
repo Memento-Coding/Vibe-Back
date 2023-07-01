@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
         trim: true,
+        unique: true
     },
     email: {
         type: String,
@@ -16,15 +17,19 @@ const userSchema = new mongoose.Schema({
         require: true,
     },
     MyPlaylist: [{
+        seq: {
+            type: Number,
+            default: 0
+        },
         cancion: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Song"
         }
     }],
-    MisGeneros: {
-        type: Array,
-        require: false,
-    },
+    MisGeneros: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MusicalGenre"
+    }],
     foto: {
         type: String,
         require: false,
