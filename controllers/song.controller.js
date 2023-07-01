@@ -1,12 +1,19 @@
 const songService = require('../services/song.service');
 
 const getSongs = async(req, res) => {
+  try {
     const { term } = req.params;
     const songs = await songService.getSongs(term);
     
     res.json({
         results: songs
     })
+  } catch (error) {
+    console.log(error);
+        res.status(500).json({
+            msg: 'Error en el servidor, hable con el administrador'
+        })
+  }
 }
 
 const uploadSong = async (req,res)=>{

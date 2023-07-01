@@ -1,4 +1,5 @@
 const User = require('../database/models/user.model');
+const Song = require('../database/models/song.model')
 
 //Verificar si el correo ya existe en la BD
 const duplicatedEmail = async(email = '') => {
@@ -27,9 +28,18 @@ const permittedCollections = (collection = '', collections = []) =>{
   return true;
 }
 
+//Verificar si existe la cancion 
+const songExists = async(id) => {
+  const getSongId = await Song.findById(id);
+  if(!getSongId){
+    throw new Error (`La cancion con id: ${id}  no se encuentra en la BD`);
+  }
+}
+
 
   module.exports = {
     duplicatedEmail,
     userExists,
-    permittedCollections
+    permittedCollections,
+    songExists
   }
