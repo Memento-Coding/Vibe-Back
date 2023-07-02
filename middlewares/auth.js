@@ -1,5 +1,6 @@
 const {verifyToken} = require('../helpers/verify-jwt');
 const userService = require('../services/user.service');
+
 const checkAuth = async (req,res,next) =>{
     try {
         const token = req.headers.authorization.split(' ').pop();
@@ -10,6 +11,8 @@ const checkAuth = async (req,res,next) =>{
                 msg: 'Token no valido - usuario no existe'
             });
         }
+
+        req.user = existeUsuario;
         next();
     } catch (error) {
         res.status(401);

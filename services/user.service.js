@@ -2,13 +2,24 @@ const User = require('../database/models/user.model');
 const bcrypt = require('bcrypt');
 
 const getUserById = async (id) => {
-    const user = User.findById(id);
+    const user = User.findById(id);    
 
     return user;
 }
 
+const getUserPlaylistById = async (id) => {
+    const userPlaylist = User.findById(id).populate('MyPlaylist.cancion').select('MyPlaylist');    
+
+    return userPlaylist;
+}
+
+const getUserMusicalGenresById = async (id) => {
+    const userMusicalGenres = User.findById(id).populate('MisGeneros').select('MisGeneros');    
+
+    return userMusicalGenres;
+}
+
 const createUser = async (newUser)=>{
-    //TODO: Encriptar password con bcrypt
     const {email,password,username} = newUser;
     const passwordHash = await bcrypt.hash(password,10);
     const user = new User({
@@ -36,6 +47,24 @@ const updateUser = async(id, user) => {
     return updatebd;
 }
 
+const updateMyPlaylist = async(id, songId) => {
+
+    const updatePlaylist = await User.findByIdAndUpdate(id, {
+        $push: {MyPlaylist: {cancion: songId}}
+    });
+
+    return updatePlaylist;
+}
+
+const updateMyMusicalGenres = async(id, musicalGenresArray) => {
+
+    const updatePlaylist = await User.findByIdAndUpdate(id, {
+        $push: {MisGeneros: { $each: musicalGenresArray }}
+    });
+
+    return updatePlaylist;
+}
+
 const login = async (newUser)=>{
     const {emailOrUser,password} = newUser;
     try {
@@ -57,9 +86,15 @@ const login = async (newUser)=>{
     
 }
 
+
+
 module.exports = {
     getUserById,
     createUser,
     updateUser,
-    login
+    login,
+    updateMyPlaylist,
+    updateMyMusicalGenres,
+    getUserPlaylistById,
+    getUserMusicalGenresById
 }

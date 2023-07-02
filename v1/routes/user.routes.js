@@ -1,8 +1,9 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
 const userController = require('../../controllers/user.controller');
-const { userExists, duplicatedEmail } = require('../../helpers/db-validators');
+const { userExists, duplicatedEmail, songExists } = require('../../helpers/db-validators');
 const { validateFields } = require('../../middlewares/validate-fields');
+const checkAuth = require('../../middlewares/auth');
 const router = Router();
 
 router.post('/register', [
@@ -32,5 +33,31 @@ router.put('/:id', [
     validateFields
         
 ], userController.userPut);
+
+router.patch('/:songId', [
+    //Validando token
+    checkAuth,
+    //Validando que el id enviado sea de MONGODB.
+    check("songId", "No es un ID valido").isMongoId(),
+    //Validar que el id de la cancion exista en la bd
+    check("songId").custom(songExists),
+
+    validateFields
+], userController.userPatchPlaylist)
+
+router.patch('/add/musicalgenres', [
+    checkAuth,
+], userController.userPatchMyMusicalGenres)
+
+
+router.get('/myPlaylist', [
+    //Validando token
+    checkAuth,
+], userController.userGetMyPlaylist)
+
+router.get('/myMusicalGenres', [
+    //Validando token
+    checkAuth,
+], userController.userGetMyMusicalGenres)
 
 module.exports = router
