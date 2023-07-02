@@ -3,8 +3,10 @@ const { check } = require('express-validator');
 const songController = require('../../controllers/song.controller');
 const checkAuth = require('../../middlewares/auth');
 
+const multer = require('multer');
 const router = Router();
-
+const storage = multer.memoryStorage();
+const upload = multer({ storage:storage });
 /**
  * @swagger
  * components:
@@ -116,6 +118,8 @@ router.get('/find/:term', [
   //Validadon token
   checkAuth
 ],songController.getSongs);
+
+router.post('/', upload.single('song'),songController.uploadSong);
 
 
 module.exports = router;

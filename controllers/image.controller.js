@@ -1,8 +1,6 @@
 const { uploadFileToS3 } = require("../helpers/upload-file");
 const sharp = require("sharp");
 const fs = require("fs");
-const userService = require('../services/user.service');
-const songService = require('../services/song.service');
 const { deleteFileFromS3 } = require("../helpers/delete-file");
 const { directoryDefiner } = require("../helpers/bucketDirectory");
 

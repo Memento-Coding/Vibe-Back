@@ -1,11 +1,17 @@
 const {Router} = require('express');
-const { check, oneOf } = require('express-validator');
+const { check } = require('express-validator');
+const fileUpload = require('express-fileupload');
 const imageController = require('../../controllers/image.controller');
 const { validateFields } = require('../../middlewares/validate-fields');
 const { verifyFile } = require('../../middlewares/verify-file');
 const { permittedCollections, userExists, songExists } = require('../../helpers/db-validators');
 const checkAuth = require('../../middlewares/auth');
 const router = Router();
+
+router.use(fileUpload({
+    useTempFiles:true,
+    tempFileDir: '/tmp/'
+}))
 
 //PUT actualizar foto
 /**
