@@ -12,6 +12,51 @@ router.use(fileUpload({
     tempFileDir: '/tmp/'
 })),
 
+/**
+ * @swagger
+ * tags:
+ *   name: Imágenes
+ *   description: Operaciones relacionadas con imágenes
+ */
+
+/**
+ * @swagger
+ * /images/{collection}/{id}:
+ *   put:
+ *     summary: Subir imagen
+ *     tags: [Imágenes]
+ *     description: Sube una imagen a una colección específica.
+ *     parameters:
+ *       - in: path
+ *         name: collection
+ *         required: true
+ *         description: Nombre de la colección.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del elemento relacionado.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Imagen subida con éxito.
+ *       400:
+ *         description: Error al subir la imagen.
+ *       500:
+ *         description: Error en el servidor.
+ */
 router.put('/:collection/:id', [
     //Validando que el id enviado sea de MONGODB.
     check("id", "No es un ID valido").isMongoId(),
@@ -22,6 +67,34 @@ router.put('/:collection/:id', [
     validateFields,
 ],imageController.uploadFile)
 
+/**
+ * @swagger
+ * /images/{collection}/{id}:
+ *   delete:
+ *     summary: Eliminar imagen
+ *     tags: [Imágenes]
+ *     description: Elimina una imagen de una colección específica.
+ *     parameters:
+ *       - in: path
+ *         name: collection
+ *         required: true
+ *         description: Nombre de la colección.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del elemento relacionado.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Imagen eliminada con éxito.
+ *       400:
+ *         description: Error al eliminar la imagen.
+ *       500:
+ *         description: Error en el servidor.
+ */
 router.delete('/:collection/:id', [
     //Validando que el id enviado sea de MONGODB.
     check("id", "No es un ID valido").isMongoId(),
