@@ -70,6 +70,10 @@ const register = (req,res)=>{
     }
 }
 
+const registerGoogle = ()=>{
+
+}
+
 const userPut = async(req, res) => {
     try {
         const {id} = req.params;
@@ -124,7 +128,9 @@ const userPatchMyMusicalGenres = async(req, res) => {
     }
 }
 
+const loginGoogle = (req,res)=>{
 
+}
 
 module.exports = {
     register,

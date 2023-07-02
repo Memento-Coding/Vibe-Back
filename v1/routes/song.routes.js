@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const songController = require('../../controllers/song.controller');
-
+const multer = require('multer');
 const router = Router();
-
+const storage = multer.memoryStorage();
+const upload = multer({ storage:storage });
 /**
  * @swagger
  * /song:
@@ -30,6 +31,7 @@ router.get('/', [
 ], songController.getRandomSongs);
 
 router.get('/:term', songController.getSongs);
+router.post('/', upload.single('song'),songController.uploadSong);
 
 
 module.exports = router;
