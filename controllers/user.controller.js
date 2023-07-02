@@ -1,30 +1,30 @@
 const userService = require('../services/user.service');
-const generateToken= require('../helpers/generateToken');
+const generateToken = require('../helpers/generateToken');
 
-const register = (req,res)=>{
-    const {email,password,username} = req.body;
+const register = (req, res) => {
+    const { email, password, username } = req.body;
     const user = {
         username,
         email,
         password
     }
     const response = userService.createUser(user);
-    if(response){
+    if (response) {
         res.status(201).send({
-            message:"Usuario Registrado",
+            message: "Usuario Registrado",
         })
-    }else{
+    } else {
         res.send(response);
     }
 }
 
-const registerGoogle = ()=>{
+const registerGoogle = () => {
 
 }
 
-const userPut = async(req, res) => {
-    const {id} = req.params;
-    const {...user} = req.body;
+const userPut = async (req, res) => {
+    const { id } = req.params;
+    const { ...user } = req.body;
     try {
         await userService.updateUser(id, user)
         res.json({
@@ -39,31 +39,34 @@ const userPut = async(req, res) => {
     }
 }
 
-const favoriteSong = async(req, res) => {
+const favoriteSong = async (req, res) => {
 
 }
 
-const login = async (req,res)=>{
-    const {emailOrUser,password} = req.body;
+const login = async (req, res) => {
+    const { emailOrUser, password } = req.body;
     const user = {
         emailOrUser,
         password
     }
     const isLoggedIn = await userService.login(user);
-    console.log(isLoggedIn?.user._id);
-    if(isLoggedIn.flag){
-        const token = await generateToken.tokenSign(isLoggedIn?.user);
-        res.status(200).send({
-            token,
+    if (isLoggedIn == null) {
+        res.status(401).send({
+            message: "Datos incorrectos"
         });
-        return;
+    } else {
+        if (isLoggedIn.flag) {
+            const token = await generateToken.tokenSign(isLoggedIn?.user);
+            res.status(200).send({
+                token,
+            });
+            return;
+        }
     }
-    res.status(401).send({
-        message:"Datos incorrectos"
-    });
+
 }
 
-const loginGoogle = (req,res)=>{
+const loginGoogle = (req, res) => {
 
 }
 

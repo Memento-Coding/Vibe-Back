@@ -40,6 +40,9 @@ const login = async (newUser)=>{
     const {emailOrUser,password} = newUser;
     try {
         const userFound = await User.findOne().or([{email:emailOrUser},{username:emailOrUser}]);
+        if(userFound == null){
+            return null;
+        }
         const isPassword = bcrypt.compare(password, userFound.password);
         if(!userFound && !isPassword){
             return false;
