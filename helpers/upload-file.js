@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
 const s3 = require('../helpers/s3-connection');
 
-const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg","mp3"], buffer) => {
+const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg"], buffer, bucketDirectory) => {
 
   return new Promise((resolve, reject) => {
     const { file } = files;
@@ -19,7 +19,7 @@ const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg","mp3"], 
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: "profile/" + newName,
+      Key: bucketDirectory + newName,
       Body: buffer,
       
     }
@@ -32,7 +32,7 @@ const uploadFileToS3 = (files , validExtensions = ["png", "jpg", "jpeg","mp3"], 
         console.log(err, err.stack); // an error occurred
       } 
       else{
-        resolve(`https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/photo/${newName}`);
+        resolve(`https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${bucketDirectory}${newName}`);
       }
     });;
   });
