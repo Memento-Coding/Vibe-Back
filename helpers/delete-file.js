@@ -1,11 +1,11 @@
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const s3 = require('../helpers/s3-connection');
 
-const deleteFileFromS3 = async (fileName) => {
+const deleteFileFromS3 = async (fileName, bucketDirectory) => {
     try {
         const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: "profile/" + fileName,
+            Key: bucketDirectory + fileName
         }
     
         const command = new DeleteObjectCommand(params)

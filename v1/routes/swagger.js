@@ -12,55 +12,20 @@ const options = {
     servers: [
       {
         url: 'https://thriving-insect-production.up.railway.app/v1/',
+        description: 'Entorno de produccion de apis',
+        url: 'http://localhost:8080/v1/',
+        description: 'Entorno de desarrollo de apis'
       },
     ],
     components: {
-      schemas: {
-        User: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'integer',
-              description: 'ID del evento',
-            },
-            nombre: {
-              type: 'string',
-              description: 'Nombre del evento',
-            },
-            descripcion: {
-              type: 'string',
-              description: 'Descripción del evento',
-            },
-            fecha_hora: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Fecha y hora del evento',
-            },
-          },
-        },
-        Song: {
-          type: 'object',
-          properties: {
-            _id: {
-              type: 'string',
-              description: 'ID de la canción',
-            },
-            nombre: {
-              type: 'string',
-              description: 'Nombre de la canción',
-            },
-            artista: {
-              type: 'string',
-              description: 'Artista de la canción',
-            },
-            foto: {
-              type: 'string',
-              description: 'URL de la foto de la canción',
-            },
-          },
-        },
-      },
-    },
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    }
   },
   apis: ['v1/routes/*.routes.js'],
 };

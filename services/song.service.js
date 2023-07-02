@@ -1,10 +1,15 @@
 const Song = require("../database/models/song.model");
+const { diacriticSensitiveRegex } = require("../helpers/diacriticRegex");
+
+const getSongById = async (id) => {
+  const song = Song.findById(id);    
+
+  return song;
+}
 
 const getSongs = async(term) => {
-  //Expresion regular para hacer que la busqueda sea insensible a mayus y minus
-  const regex = new RegExp(term, "i");
-  const getSongs = await Song.find({
-    nombre: regex,
+  const getSongs =  Song.find({
+    name: {$regex: diacriticSensitiveRegex(term), $options: 'i'}
   });
 
   return getSongs;
@@ -19,6 +24,7 @@ const getRandomSongs = async (count) => {
 };
 
 module.exports = {
+  getSongById,
   getSongs,
   getRandomSongs
 };

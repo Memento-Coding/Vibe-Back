@@ -3,10 +3,11 @@ const songService = require('../services/song.service');
 const getSongs = async(req, res) => {
   try {
     const { term } = req.params;
-    const songs = await songService.getSongs(term);
+    const newTerm = term.split('+').join(' ');
+    const songs = await songService.getSongs(newTerm);
     
     res.json({
-        results: songs
+        songs
     })
   } catch (error) {
     console.log(error);
