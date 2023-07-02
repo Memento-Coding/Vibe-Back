@@ -18,6 +18,10 @@ const register = (req,res)=>{
     }
 }
 
+const registerGoogle = ()=>{
+
+}
+
 const userPut = async(req, res) => {
     const {id} = req.params;
     const {...user} = req.body;
@@ -57,6 +61,10 @@ const login = async (req,res)=>{
     res.status(401).send({
         message:"Datos incorrectos"
     });
+}
+
+const loginGoogle = (req,res)=>{
+
 }
 
 module.exports = {

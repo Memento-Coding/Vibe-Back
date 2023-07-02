@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const db = require('./database/connection');
 const routerUser = require('./v1/routes/user.routes');
@@ -15,10 +14,6 @@ db.connectDb();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
-app.use(fileUpload({
-    useTempFiles:true,
-    tempFileDir: '/tmp/'
-}));
 app.use('/v1/user', routerUser);
 app.use('/v1/image', routerImage);
 app.use('/v1/song', routerSong);
