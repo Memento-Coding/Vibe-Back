@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://thriving-insect-production.up.railway.app/v1/',
+        url: 'https://thriving-insect-production.up.railway.app',
         description: 'Entorno de produccion de apis'
       },
     ],
