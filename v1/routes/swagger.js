@@ -12,9 +12,7 @@ const options = {
     servers: [
       {
         url: 'https://thriving-insect-production.up.railway.app/v1/',
-        description: 'Entorno de produccion de apis',
-        // url: 'http://localhost:8080/v1/',
-        // description: 'Entorno de desarrollo de apis'
+        description: 'Entorno de produccion de apis'
       },
     ],
     components: {
