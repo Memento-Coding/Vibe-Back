@@ -1,38 +1,40 @@
 const userService = require('../services/user.service');
 const generateToken = require('../helpers/generateToken');
+const axios = require('axios');
+require('dotenv').config();
 
-const userGetMyPlaylist = async(req, res) => {
+const userGetMyPlaylist = async (req, res) => {
     try {
         const userId = req.user.id;
-        const response = await userService.getUserPlaylistById(userId);    
+        const response = await userService.getUserPlaylistById(userId);
         for (let index = 0; index < response.MyPlaylist.length; index++) {
-            response.MyPlaylist[index].seq = index+1;
+            response.MyPlaylist[index].seq = index + 1;
         }
-        
+
         res.json({
             response
         })
     } catch (error) {
-        
+
     }
 }
 
-const userGetMyMusicalGenres = async(req, res) => {
+const userGetMyMusicalGenres = async (req, res) => {
     try {
         const userId = req.user.id;
-        
+
         const response = await userService.getUserMusicalGenresById(userId);
-        
+
         res.json({
             response
         })
     } catch (error) {
-        
+
     }
 }
 
-const register = (req,res)=>{
-    const {email,password,username} = req.body;
+const register = (req, res) => {
+    const { email, password, username } = req.body;
     const user = {
         username,
         email,
@@ -48,16 +50,46 @@ const register = (req,res)=>{
     }
 }
 
-const registerGoogle = () => {
+const registerGoogle = (req, res) => {
+    const { displayName, email, photoURL } = req.body;
+
+    try {
+        const userFound = userService.getUserByEmail(email);
+        if (userFound) {
+            return res.status(409).json({ error: 'El usuario ya existe', redirect: false });
+        }
+        const nuevoUsuario = {
+            username: displayName,
+            email,
+            foto: photoURL,
+        };
+        const response = userService.createUserWithGoogle(nuevoUsuario);
+        if (response) {
+            res.status(201).send({
+                message: "Usuario registrado exitosamente",
+                redirect: true
+            })
+        } else {
+            res.json({
+                response,
+                redirect: false
+            });
+        }
+
+    } catch (error) {
+        console.error('Error al registrar el usuario:', error.message);
+        res.status(500).json({ error: 'Error al registrar el usuario', redirect: false });
+
+    }
 
 }
 
 
 
-const userPut = async(req, res) => {
+const userPut = async (req, res) => {
     try {
-        const {id} = req.params;
-        const {...user} = req.body;
+        const { id } = req.params;
+        const { ...user } = req.body;
 
         await userService.updateUser(id, user)
         res.json({
@@ -98,10 +130,10 @@ const login = async (req, res) => {
         }
     }
 }
-const userPatchPlaylist = async(req, res) => {
+const userPatchPlaylist = async (req, res) => {
     try {
         const userId = req.user.id;
-        const {songId} = req.params;
+        const { songId } = req.params;
         await userService.updateMyPlaylist(userId, songId)
         res.json({
             userId,
@@ -116,10 +148,10 @@ const userPatchPlaylist = async(req, res) => {
     }
 }
 
-const userPatchMyMusicalGenres = async(req, res) => {
+const userPatchMyMusicalGenres = async (req, res) => {
     try {
         const userId = req.user.id;
-        const {musicalGenresArray} = req.body;
+        const { musicalGenresArray } = req.body;
         console.log(musicalGenresArray);
         await userService.updateMyMusicalGenres(userId, musicalGenresArray)
         res.json({
@@ -134,8 +166,25 @@ const userPatchMyMusicalGenres = async(req, res) => {
     }
 }
 
-const loginGoogle = (req, res) => {
-
+const loginGoogle = async(req, res) => {
+    const { email } = req.body;
+    try {
+        const userFound = await userService.getUserByEmail(email);
+        if (userFound) {
+            const {username,foto,_id} = userFound;
+            const newUser = {
+                _id,
+                username,
+                foto                
+            }
+            const token = await generateToken.tokenSign(newUser);
+            return res.status(200).json({ token, redirect: true });
+        }else{
+            return res.status(401).json({ message:"Usuario no registrado", redirect: false });
+        }
+    } catch (error) {
+        res.send(error);
+    }
 }
 
 module.exports = {
@@ -145,5 +194,7 @@ module.exports = {
     userPatchPlaylist,
     userGetMyPlaylist,
     userPatchMyMusicalGenres,
-    userGetMyMusicalGenres
+    userGetMyMusicalGenres,
+    registerGoogle,
+    loginGoogle
 }

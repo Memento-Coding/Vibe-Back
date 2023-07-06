@@ -3,7 +3,10 @@ const bcrypt = require('bcrypt');
 
 const getUserById = async (id) => {
     const user = User.findById(id);    
-
+    return user;
+}
+const getUserByEmail = async (email) => {
+    const user = User.findOne({email:email});
     return user;
 }
 
@@ -26,6 +29,23 @@ const createUser = async (newUser)=>{
         username,
         email,
         password: passwordHash,
+        MyPlaylist: [],
+        MisGeneros: []
+    });
+    try {
+        await user.save();
+        return true;
+    } catch (error) {
+        return error;
+    }
+}
+
+const createUserWithGoogle = async (newUser)=>{
+    const {username,email,foto} = newUser;
+    const user = new User({
+        username,
+        email,
+        foto,
         MyPlaylist: [],
         MisGeneros: []
     });
@@ -96,5 +116,7 @@ module.exports = {
     updateMyPlaylist,
     updateMyMusicalGenres,
     getUserPlaylistById,
-    getUserMusicalGenresById
+    getUserMusicalGenresById,
+    getUserByEmail,
+    createUserWithGoogle
 }

@@ -50,8 +50,26 @@ const uploadSong = async (req,res)=>{
   }
 }
 
-const createSong = async (req,res)=>{
-  
+const createSong =  (req,res)=>{
+  const {name,artist,genre,duration,photo,file} = req.body;
+  const song = {
+    name,
+    artist,
+    genre,
+    duration,
+    photo,
+    file
+  }
+  try {
+    const response = songService.createaSong(song);
+    if(response){
+      res.status(201).send({message:"Canción registrada con exito"})
+    }else{
+      res.status(400).send({message:"Error al registrar la canción"})
+    }
+  } catch (error) {
+    res.status(400).send({message:"Ups! ha ocurrido algo🙁"}) 
+  }
 }
 
 const getRandomSongs = async (req, res) => {
@@ -67,5 +85,6 @@ const getRandomSongs = async (req, res) => {
 module.exports = {
   getSongs,
   getRandomSongs,
-  uploadSong
+  uploadSong,
+  createSong
 };
