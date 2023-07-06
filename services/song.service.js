@@ -9,6 +9,20 @@ const getSongs = async(term) => {
 
   return getSongs;
 };
+
+const createaSong = async(song)=>{
+  const {name,artist,genre,duration,photo,file} = song;
+    const newSong = new Song({
+      name,
+      artist,
+      genre,
+      duration,
+      photo,
+      file
+    })
+    await newSong.save();
+    return true;
+}
 const getRandomSongs = async (count) => {
   try {
     const songs = await Song.aggregate([{ $sample: { size: count } }]);
@@ -20,5 +34,6 @@ const getRandomSongs = async (count) => {
 
 module.exports = {
   getSongs,
-  getRandomSongs
+  getRandomSongs,
+  createaSong
 };
