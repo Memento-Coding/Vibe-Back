@@ -2,6 +2,8 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { validateFields } = require('../../middlewares/validate-fields');
 const songController = require('../../controllers/song.controller');
+const checkAuth = require('../../middlewares/auth');
+
 const multer = require('multer');
 const router = Router();
 const storage = multer.memoryStorage();
@@ -12,6 +14,54 @@ const upload = multer({ storage:storage,fileFilter:(req,file,cb)=>{
     cb(new Error('Solo se permiten archivos MP3'),false);
   }
 } });
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Song:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  format: uuid
+ *                  readonly: true
+ *                  description: Id de la cancion
+ *              name:
+ *                  type: string
+ *                  description: Nombre de la cancion
+ *              artist:
+ *                  type: string
+ *                  description: Nombre del artista
+ *              genre:
+ *                  type: string
+ *                  description: Genero musical de la cancion
+ *              duration:
+ *                  type: string
+ *                  description: Duracion en minutos de la cancion
+ *              photo:
+ *                  type: string
+ *                  description: URL de la foto de la cancion
+ *              file:
+ *                  type: string
+ *                  description: URL de la cancion en la BD
+ *          required:
+ *              - name
+ *              - artist
+ *              - genre
+ *              - duration
+ *              - photo
+ *              - file
+ *          example:
+ *              name: Edge
+ *              artist: Rezz
+ *              genre: Electronica
+ *              duration: 3:59
+ *              photo: https://vibe-data-structure.s3.amazonaws.com/photo/Ok+Computer.jpg
+ *              file: https://vibe-data-structure.s3.amazonaws.com/songs/Radiohead-No-Suprises.mp3
+ *              
+ *            
+ */
+
 /**
  * @swagger
  * /song:
@@ -47,6 +97,45 @@ router.post('/',[
   check("file", "El archivo mp3 de la canción es obligatorio").not().isEmpty(),
   validateFields,
 ],songController.createSong);
+
+//GET cancion en la BD
+/**
+ * @swagger
+ * /song/find/{term}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      tags: [Song]
+ *      summary: busqueda de canciones con nombre
+ *      description: Este metodo obtiene y lista todas las canciones que concuerden con el termino ingresado.
+ *      parameters:
+ *        - in: path
+ *          name: term
+ *          required: true
+ *          type: string
+ *          description: termino a buscar en la bd
+ *      responses:
+ *          200:
+ *              description: Operacion correcta, cancion(es) con nombre similar/igual obtenida.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/song'
+ *          400:
+ *              description: Id invalido, cancion no existe en la bd, datos ingresados incorrectamente
+ *          401:
+ *              description: Sin autorizacion, por favor ingrese el token.
+ *          500:
+ *              description: Error en el servidor.
+ *                                              
+ *                              
+ */
+router.get('/find/:term', [
+  //Validadon token
+  checkAuth
+],songController.getSongs);
 
 
 module.exports = router;

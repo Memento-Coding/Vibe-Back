@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "MusicalGenre"
     }],
-    foto: {
+    photo: {
         type: String,
         require: false,
         default: "https://img.freepik.com/free-icon/user_318-159711.jpg",
