@@ -9,12 +9,6 @@ const options = {
       version: '1.0.0',
       description: 'Documentation for your API',
     },
-    servers: [
-      {
-        url: 'https://thriving-insect-production.up.railway.app/v1/',
-        description: 'Entorno de produccion de apis'
-      },
-    ],
     components: {
       securitySchemes: {
         bearerAuth: {
