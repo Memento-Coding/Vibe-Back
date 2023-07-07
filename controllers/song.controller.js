@@ -50,7 +50,7 @@ const uploadSong = async (req,res)=>{
   }
 }
 
-const createSong =  (req,res)=>{
+const createSong =  async (req,res)=>{
   const {name,artist,genre,duration,photo,file} = req.body;
   const song = {
     name,
@@ -61,9 +61,10 @@ const createSong =  (req,res)=>{
     file
   }
   try {
-    const response = songService.createaSong(song);
-    if(response){
-      res.status(201).send({message:"Canción registrada con exito"})
+    const response = await songService.createaSong(song);
+    const newSong = response.song;
+    if(response?.flag){
+      res.status(201).send({message:"Canción registrada con exito", newSong})
     }else{
       res.status(400).send({message:"Error al registrar la canción"})
     }

@@ -25,8 +25,12 @@ const createaSong = async(song)=>{
       photo,
       file
     })
-    await newSong.save();
-    return true;
+    const songResponse = await newSong.save();
+    console.log(songResponse);
+    return {
+      flag:true,
+      song:songResponse
+    };
 }
 const getRandomSongs = async (count) => {
   try {
