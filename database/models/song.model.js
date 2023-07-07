@@ -19,7 +19,7 @@ const songSchema = new mongoose.Schema({
     photo:{
         type:String,
         require:true,
-        default:"https://vibe-data-structure.s3.amazonaws.com/photo/Default.png",
+        default:"https://vibe-data-structure.s3.amazonaws.com/default/Default.png",
     },
     file:{
         type:String,
