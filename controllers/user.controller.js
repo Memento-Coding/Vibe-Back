@@ -1,6 +1,5 @@
 const userService = require('../services/user.service');
 const generateToken = require('../helpers/generateToken');
-const axios = require('axios');
 require('dotenv').config();
 
 const userGetMyPlaylist = async (req, res) => {
@@ -166,26 +165,20 @@ const userPatchMyMusicalGenres = async (req, res) => {
     }
 }
 
-const loginGoogle = async(req, res) => {
-    const { email } = req.body;
+const loginGoogle = async (req,res)=>{
+    const {tokenId} = req.body;
     try {
-        const userFound = await userService.getUserByEmail(email);
-        if (userFound) {
-            const {username,foto,_id} = userFound;
-            const newUser = {
-                _id,
-                username,
-                foto                
-            }
-            const token = await generateToken.tokenSign(newUser);
-            return res.status(200).json({ token, redirect: true });
+        const responseGoogle = await userService.googleSignIn(tokenId);
+        if(responseGoogle.flag){
+            res.status(200).send({flag:true,token:responseGoogle.token});
         }else{
-            return res.status(401).json({ message:"Usuario no registrado", redirect: false });
+            res.status(401).send({flag:false, message:"Ups! algo ha ocurrido"});
         }
     } catch (error) {
-        res.send(error);
+        res.status(401).send({error})
     }
 }
+
 
 module.exports = {
     register,
